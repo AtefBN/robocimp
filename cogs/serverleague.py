@@ -80,7 +80,7 @@ def filter_by_vote(servers, vote):
     return filtered_list, len(filtered_list)
 
 
-class General:
+class ServerLeague:
     """General commands."""
 
     def __init__(self, bot):

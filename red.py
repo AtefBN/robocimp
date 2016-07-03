@@ -22,7 +22,7 @@ import traceback
 #
 
 description = """
-Red - A multifunction Discord bot by Twentysix
+Robocimpu the nice neighbor dicord bot FeelsGoodMan
 """
 
 formatter = commands.HelpFormatter(show_check_failure=False)
@@ -40,6 +40,7 @@ async def on_ready():
     users = str(len(set(bot.get_all_members())))
     servers = str(len(bot.servers))
     channels = str(len([c for c in bot.get_all_channels()]))
+
     if not "uptime" in dir(bot): #prevents reset in case of reconnection
         bot.uptime = int(time.perf_counter())
     print('------')

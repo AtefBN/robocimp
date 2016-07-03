@@ -6,9 +6,13 @@ import datetime
 import time
 import aiohttp
 import asyncio
+from cogs.utils.constants import *
+import upsidedown
+import requests
 
 settings = {"POLL_DURATION" : 60}
-
+buttslap_message_1 = "slaps **"
+buttslap_message_2 = "** on dat ass :wave: and gives everybody 69 kilos of meth batmanPls CimpCoby2 Don't cry little bud CimpJake CarltonPls"
 class General:
     """General commands."""
 
@@ -20,6 +24,7 @@ class General:
                      "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again",
                      "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"]
         self.poll_sessions = []
+
 
     @commands.command(hidden=True)
     async def ping(self):
@@ -50,28 +55,89 @@ class General:
         else:
             return await self.bot.say("{} Maybe higher than 1? ;P".format(author.mention))
 
-    @commands.command(pass_context=True)
-    async def flip(self, ctx, user : discord.Member=None):
-        """Flips a coin... or a user.
 
-        Defaults to coin.
+    @commands.command(name="flip", aliases=["flipuser"], pass_context=True)
+    async def flip(self, ctx, message):
+        author = ctx.message.author
+        author = str(author).split('#')[0]
+        if len(message) > 0:
+            target = message
+            try:
+                if target not in exception_users:
+                    print('here')
+                    await self.bot.say(upsidedown.transform(message))
+                    print('now here')
+                else:
+                    await self.bot.say(exception_msg + '   ' + upsidedown.transform(author))
+            except AttributeError:
+                print('FUCK')
+
+    @commands.command(name="hype")
+    async def hype(self):
+        await self.bot.say('batmanPls ArniePls HanaPls cimpHype cimpHype cimpHype HanaPls ArniePls batmanPls')
+
+    @commands.command(name="mediaso")
+    async def mediaso(self):
+        await self.bot.say(mediaso)\
+
+    @commands.command(name="legendo")
+    async def legendo(self):
+        await self.bot.say(legendo)
+
+    @commands.command(name="wurstle")
+    async def wurstle(self):
+        await self.bot.say(wurstle)\
+
+    @commands.command(name="FeelsChanoMan")
+    async def chano(self):
+        await self.bot.say(chano)
+
+    @commands.command(name="zerga")
+    async def zerga(self):
+        await self.bot.say(zerga)
+
+    @commands.command(name="red", aliases=["Red"])
+    async def red(self):
+        await self.bot.say('osoGrumpy')
+
+    @commands.command(name="fail", aliases=["ifail"])
+    async def fail(self):
+        await self.bot.say('elaPablo')
+
+    @commands.command(name="cimp", aliases=["cimpu", "immersedCimp"])
+    async def cimp(self):
+        await self.bot.say(cimpu)
+
+    @commands.command(name="selfdestruct")
+    async def selfdestruct(self):
+        await self.bot.say(selfdestruct)
+
+    @commands.command(name="muffin")
+    async def muffin(self, message):
+        await self.bot.say(muffin_msg_1 + message + muffin_msg_2)
+
+    # async def heavybreathing(self, message):
+    #     print(message.content)
+    #     if 'muffin' in message.content:
+    #         await self.bot.say('HeavyBreathing')
+
+    @commands.command()
+    async def rip(self):
+        await self.bot.say('PepeRIP')\
+
+    @commands.command()
+    async def buttslap(self, message):
+        await self.bot.say(buttslap_message_1 + message + buttslap_message_2)
+
+    @commands.command()
+    async def schedule(self):
         """
-        if user != None:
-            msg = ""
-            if user.id == self.bot.user.id:
-                user = ctx.message.author
-                msg = "Nice try. You think this is funny? How about *this* instead:\n\n"
-            char = "abcdefghijklmnopqrstuvwxyz"
-            tran = "ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz"
-            table = str.maketrans(char, tran)
-            name = user.name.translate(table)
-            char = char.upper()
-            tran = "∀qƆpƎℲפHIſʞ˥WNOԀQᴚS┴∩ΛMX⅄Z"
-            table = str.maketrans(char, tran)
-            name = name.translate(table)
-            return await self.bot.say(msg + "(╯°□°）╯︵ " + name[::-1])
-        else:
-            return await self.bot.say("*flips a coin and... " + randchoice(["HEADS!*", "TAILS!*"]))
+        prints cimpu's little schedule cimpHi
+        :return:
+        """
+        r = requests.get('http://pastebin.com/raw.php?i=nKgur18d')
+
+        await self.bot.say('```'+r.text+'```')
 
     @commands.command(pass_context=True)
     async def rps(self, ctx, choice : str):
@@ -338,4 +404,5 @@ class NewPoll():
 def setup(bot):
     n = General(bot)
     bot.add_listener(n.check_poll_votes, "on_message")
+    # bot.add_listener(n.heavybreathing, "on_message")
     bot.add_cog(n)
