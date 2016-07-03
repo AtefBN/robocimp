@@ -34,7 +34,7 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 channel_id='143010473342664704'
-client_id = '749367812272062464'
+client_id = '1955349374'
 
 
 
@@ -53,7 +53,6 @@ class TwitterBot:
             # Getting current time and converting to datetime object
             now = dt.datetime.utcnow()
             tweet = client.user_timeline(id = client_id, count = 1)[0]
-            # tweet_time = dt.datetime.strptime(tweet.created_at, "%Y-%m-%d %H:%M:%S")
             tweet_time = tweet.created_at
             if dt.timedelta(seconds=0)<now-tweet_time<dt.timedelta(seconds=60):
                 print('A NEW TWEET HAS BEEN DETECTED!')
