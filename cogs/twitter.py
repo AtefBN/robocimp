@@ -33,7 +33,7 @@ access_token_secret = 'JHADa4gAyD1oOugbay0xIg48nNsT8oXP1hrsefUHI2HQH'
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-channel_id='143010473342664704'
+channel_id=['143010473342664704', '143010743342727168']
 client_id = '1955349374'
 
 
@@ -56,7 +56,8 @@ class TwitterBot:
             tweet_time = tweet.created_at
             if dt.timedelta(seconds=0)<now-tweet_time<dt.timedelta(seconds=60):
                 print('A NEW TWEET HAS BEEN DETECTED!')
-                await self.bot.send_message(self.bot.get_channel(channel_id),base_url+str(tweet.id))
+                for ch in channel_id:
+                    await self.bot.send_message(self.bot.get_channel(ch),base_url+str(tweet.id))
             await asyncio.sleep(CHECK_DELAY)
 
 
