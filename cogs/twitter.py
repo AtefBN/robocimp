@@ -72,7 +72,10 @@ class TwitterBot:
                     logging.debug('tweet time is: ' + str(tweet.created_at))
                     for ch in channel_id:
                         logging.debug('Writing in discord channel' + str(ch))
-                        await self.bot.send_message(self.bot.get_channel(ch), base_url+str(tweet.id))
+                        try:
+                            await self.bot.send_message(self.bot.get_channel(ch), base_url+str(tweet.id))
+                        except Exception:
+                            logging.debug('Ah shit, something awry has occurred.')
                         logging.debug('Successfully written on discord !')
             await asyncio.sleep(delay)
 
