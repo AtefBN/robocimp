@@ -3,10 +3,17 @@ import tweepy
 from tweepy.auth import OAuthHandler
 import asyncio
 import datetime as dt
+import logging
+import os
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename=os.path.join(os.environ['robocimp_home'], "logs/robocimp.log"),
+                    filemode='w')
+
+tweets_list = []
 
 
-tweets_list=[]
-new_tweet = False
 class StdOutListener(tweepy.StreamListener):
     ''' Handles data received from the stream. '''
 
@@ -25,7 +32,6 @@ class StdOutListener(tweepy.StreamListener):
         return True # To continue listening
 
 
-
 consumer_key = "rpN9592M5h1urByjrYwdQAqCK"
 consumer_secret = "BpAJA6e5rUAD59marhtqY51e4l9Nn5rE0bwTOtmXWhGG4SkZOv"
 access_token = '238750569-00GxH2Ic7d1uToR2DU4blu1RpWwnZqi6C2MmNolc'
@@ -33,9 +39,14 @@ access_token_secret = 'JHADa4gAyD1oOugbay0xIg48nNsT8oXP1hrsefUHI2HQH'
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-channel_id=['143010473342664704', '143010743342727168']
-client_id = '1955349374'
 
+test_channel_id = []
+channel_id = ['143010473342664704', '143010743342727168']
+
+test_client_id = '749367812272062464'
+client_id = '1955349374'
+base_url = 'https://twitter.com/immersedCimp/status/'
+test_base_url = 'https://twitter.com/MaximuYondaimus/status'
 
 
 class TwitterBot:
@@ -48,17 +59,21 @@ class TwitterBot:
         """checks if new tweets have been tweeted."""
         # Sleep time in seconds.
         while self == self.bot.get_cog("TwitterBot"):
-            CHECK_DELAY = 60
-            base_url ='https://twitter.com/immersedCimp/status/'
+            delay = 60
             # Getting current time and converting to datetime object
             now = dt.datetime.utcnow()
-            tweet = client.user_timeline(id = client_id, count = 1)[0]
+            logging.debug('TwitterBot is up checking for tweets...' + now)
+            tweet = client.user_timeline(id=client_id, count=1)[0]
+            logging.debug('latest tweet was tweeted in: ' + tweet.created_at)
             tweet_time = tweet.created_at
-            if dt.timedelta(seconds=0)<now-tweet_time<dt.timedelta(seconds=60):
-                print('A NEW TWEET HAS BEEN DETECTED!')
+            if dt.timedelta(seconds=0) < now-tweet_time < dt.timedelta(seconds=60):
+                logging.debug('A NEW TWEET HAS BEEN DETECTED...')
+                logging.debug('tweet id is: ' + str(tweet.id))
+                logging.debug('tweet text is: ' + str(tweet.text))
+                logging.debug('tweet time is: ' + str(tweet.created_at))
                 for ch in channel_id:
-                    await self.bot.send_message(self.bot.get_channel(ch),base_url+str(tweet.id))
-            await asyncio.sleep(CHECK_DELAY)
+                    await self.bot.send_message(self.bot.get_channel(ch), base_url+str(tweet.id))
+            await asyncio.sleep(delay)
 
 
 def setup(bot):
