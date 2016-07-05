@@ -43,7 +43,7 @@ api = tweepy.API(auth)
 test_channel_id = []
 channel_id = ['143010473342664704', '143010743342727168']
 
-client_id = ['1955349374', '749367812272062464']
+client_id_list = ['1955349374', '749367812272062464']
 base_url = 'https://twitter.com/immersedCimp/status/'
 test_base_url = 'https://twitter.com/MaximuYondaimus/status'
 
@@ -62,8 +62,8 @@ class TwitterBot:
             # Getting current time and converting to datetime object
             now = dt.datetime.utcnow()
             logging.debug('TwitterBot is up checking for tweets...' + str(now))
-            for client in client_id:
-                tweet = client.user_timeline(id=client, count=1)[0]
+            for client_id in client_id_list:
+                tweet = client.user_timeline(id=client_id, count=1)[0]
                 logging.debug('latest tweet was tweeted in: ' + str(tweet.created_at))
                 tweet_time = tweet.created_at
                 if dt.timedelta(seconds=0) < now-tweet_time < dt.timedelta(seconds=delay):
