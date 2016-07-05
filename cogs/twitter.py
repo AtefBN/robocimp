@@ -43,8 +43,7 @@ api = tweepy.API(auth)
 test_channel_id = []
 channel_id = ['143010473342664704', '143010743342727168']
 
-test_client_id = '749367812272062464'
-client_id = '1955349374'
+client_id = ['1955349374', '749367812272062464']
 base_url = 'https://twitter.com/immersedCimp/status/'
 test_base_url = 'https://twitter.com/MaximuYondaimus/status'
 
@@ -63,17 +62,18 @@ class TwitterBot:
             # Getting current time and converting to datetime object
             now = dt.datetime.utcnow()
             logging.debug('TwitterBot is up checking for tweets...' + str(now))
-            tweet = client.user_timeline(id=client_id, count=1)[0]
-            logging.debug('latest tweet was tweeted in: ' + str(tweet.created_at))
-            tweet_time = tweet.created_at
-            if dt.timedelta(seconds=0) < now-tweet_time < dt.timedelta(seconds=60):
-                logging.debug('A NEW TWEET HAS BEEN DETECTED...')
-                logging.debug('tweet id is: ' + str(tweet.id))
-                logging.debug('tweet time is: ' + str(tweet.created_at))
-                for ch in channel_id:
-                    logging.debug('Writing in discord channel' + str(ch))
-                    await self.bot.send_message(self.bot.get_channel(ch), base_url+str(tweet.id))
-                    logging.debug('Successfully written on discord !')
+            for client in client_id:
+                tweet = client.user_timeline(id=client, count=1)[0]
+                logging.debug('latest tweet was tweeted in: ' + str(tweet.created_at))
+                tweet_time = tweet.created_at
+                if dt.timedelta(seconds=0) < now-tweet_time < dt.timedelta(seconds=delay):
+                    logging.debug('A NEW TWEET HAS BEEN DETECTED...')
+                    logging.debug('tweet id is: ' + str(tweet.id))
+                    logging.debug('tweet time is: ' + str(tweet.created_at))
+                    for ch in channel_id:
+                        logging.debug('Writing in discord channel' + str(ch))
+                        await self.bot.send_message(self.bot.get_channel(ch), base_url+str(tweet.id))
+                        logging.debug('Successfully written on discord !')
             await asyncio.sleep(delay)
 
 
