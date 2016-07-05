@@ -128,7 +128,7 @@ class General:
 
     @commands.command()
     async def rip(self):
-        await self.bot.say('PepeRIP')\
+        await self.bot.say('PepeRIP')
 
     @commands.command()
     async def buttslap(self, message):
@@ -143,6 +143,15 @@ class General:
         r = requests.get('http://pastebin.com/raw.php?i=nKgur18d')
 
         await self.bot.say('```'+r.text+'```')
+
+    @commands.command()
+    async def betterdiscord(self):
+        """
+        Shows better discord download url
+        """
+        response = 'BetterDiscord enhances Discord with several features. Follow this link to download it: ' \
+                   'https://betterdiscord.net/home/'
+        await self.bot.say('```'+response+'```')
 
     @commands.command(pass_context=True)
     async def rps(self, ctx, choice : str):
