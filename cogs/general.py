@@ -31,6 +31,11 @@ class General:
         """Pong."""
         await self.bot.say("Pong.")
 
+    @commands.command(hidden=True)
+    async def shots(self):
+        """Pong."""
+        await self.bot.say("shots fired! :boom: :boom: :boom: :boom: :boom: :gun:")
+
     @commands.command()
     async def choose(self, *choices):
         """Chooses between multiple choices.
@@ -203,21 +208,10 @@ class General:
         await self.bot.say("http://lmgtfy.com/?q={}".format(search_terms))
 
     @commands.command(no_pm=True, hidden=True)
-    async def hug(self, user : discord.Member, intensity : int=1):
-        """Because everyone likes hugs
-
-        Up to 10 intensity levels."""
+    async def hug(self, user : discord.Member):
+        """Because everyone likes hugs"""
         name = " *" + user.name + "*"
-        if intensity <= 0:
-            msg = "(っ˘̩╭╮˘̩)っ" + name
-        elif intensity <= 3:
-            msg = "(っ´▽｀)っ" + name
-        elif intensity <= 6:
-            msg = "╰(*´︶`*)╯" + name
-        elif intensity <= 9:
-            msg = "(つ≧▽≦)つ" + name
-        elif intensity >= 10:
-            msg = "(づ￣ ³￣)づ" + name + " ⊂(´・ω・｀⊂)"
+        msg = "(づ￣ ³￣)づ" + name + " ⊂(´・ω・｀⊂)"
         await self.bot.say(msg)
 
     @commands.command(pass_context=True, no_pm=True)
